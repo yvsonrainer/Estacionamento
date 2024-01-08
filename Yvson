@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+
+class Veiculo
+{
+    public string Placa { get; set; }
+    public string Modelo { get; set; }
+
+    public Veiculo(string placa, string modelo)
+    {
+        Placa = placa;
+        Modelo = modelo;
+    }
+}
+
+class Estacionamento
+{
+    private List<Veiculo> veiculosEstacionados;
+
+    public Estacionamento()
+    {
+        veiculosEstacionados = new List<Veiculo>();
+    }
+
+    public void EstacionarVeiculo(Veiculo veiculo)
+    {
+        veiculosEstacionados.Add(veiculo);
+        Console.WriteLine($"Veículo {veiculo.Modelo} ({veiculo.Placa}) estacionado com sucesso.");
+    }
+
+    public void RetirarVeiculo(string placa)
+    {
+        Veiculo veiculo = veiculosEstacionados.Find(v => v.Placa == placa);
+
+        if (veiculo != null)
+        {
+            veiculosEstacionados.Remove(veiculo);
+            Console.WriteLine($"Veículo {veiculo.Modelo} ({veiculo.Placa}) retirado do estacionamento.");
+        }
+        else
+        {
+            Console.WriteLine($"Veículo com placa {placa} não encontrado no estacionamento.");
+        }
+    }
+
+    public void ListarVeiculosEstacionados()
+    {
+        Console.WriteLine("Veículos estacionados:");
+        foreach (Veiculo veiculo in veiculosEstacionados)
+        {
+            Console.WriteLine($"{veiculo.Modelo} ({veiculo.Placa})");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Estacionamento estacionamento = new Estacionamento();
+
+        while (true)
+        {
+            Console.WriteLine("\nMenu:");
+            Console.WriteLine("1. Estacionar veículo");
+            Console.WriteLine("2. Retirar veículo");
+            Console.WriteLine("3. Listar veículos estacionados");
+            Console.WriteLine("4. Sair");
+            Console.Write("Escolha uma opção: ");
+
+            string opcao = Console.ReadLine();
+
+            switch (opcao)
+            {
+                case "1":
+                    Console.Write("Informe a placa do veículo: ");
+                    string placaEstacionar = Console.ReadLine();
+                    Console.Write("Informe o modelo do veículo: ");
+                    string modeloEstacionar = Console.ReadLine();
+                    estacionamento.EstacionarVeiculo(new Veiculo(placaEstacionar, modeloEstacionar));
+                    break;
+                case "2":
+                    Console.Write("Informe a placa do veículo a ser retirado: ");
+                    string placaRetirar = Console.ReadLine();
+                    estacionamento.RetirarVeiculo(placaRetirar);
+                    break;
+                case "3":
+                    estacionamento.ListarVeiculosEstacionados();
+                    break;
+                case "4":
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida. Tente novamente.");
+                    break;
